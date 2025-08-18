@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -26,6 +28,12 @@ public class PostController {
     public ResponseEntity<PostDto> getPost(@PathVariable Long postId){
         PostDto postDto = postService.getPostById(postId);
         return ResponseEntity.ok(postDto);
+    }
+
+    @GetMapping("/users/{userId}/allPosts")
+    public ResponseEntity<List<PostDto>> getAllPostsOfUser(@PathVariable Long userId){
+        List<PostDto> posts= postService.getAllPostsOfUser(userId);
+        return ResponseEntity.ok(posts);
     }
 
 }

@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,5 +36,12 @@ public class PostService {
         Post post= postRepository.findById(postId).orElseThrow(()->
                 new ResourceNotFoundException("post not found with id: "+postId));
         return modelMapper.map(post,PostDto.class);
+    }
+
+    public List<PostDto> getAllPostsOfUser(Long userId) {
+       List<Post> posts=  postRepository.findByUserId(userId);
+        List<PostDto> postDtoList = posts.stream()
+                .map((element) -> modelMapper.map(element, PostDto.class)).collect(Collectors.toList());
+        return postDtoList;
     }
 }
